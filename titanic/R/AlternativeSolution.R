@@ -3,9 +3,9 @@
 
 ###################################################################     Globals&CONSTANTS      ###############################################################
 #INPUT PATH
-input_path <- "C:/Users/Marco/Desktop/MLMilan/Titanic/data/"
+input_path <- "./../input"
 #OUTPUT PATH
-output_path <- "C:/Users/Marco/Desktop/MLMilan/Titanic/output/"
+output_path <- "./../output"
 # Final file of predictions
 output_name <- "Predictions"
 
