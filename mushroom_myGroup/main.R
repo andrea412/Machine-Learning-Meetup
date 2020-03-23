@@ -9,23 +9,25 @@ library(corrplot)
 library(RColorBrewer)
 library(vcd)
 library(rsample)      # data splitting 
-
+library(tree)
 cat("\014")
 rm(list = ls())
 
 source("ausiliaryFunctions.R")
 
 pathinput<-"./mushrooms.csv"
-dataset<-read.csv2(pathinput , sep =",",stringsAsFactors = FALSE)
+dataset<-read.csv2(pathinput , sep =",",stringsAsFactors = FALSE) 
+dataset<-data.frame(apply(dataset,2,FUN = as.factor))
 set.seed(123)
 mr_split <- initial_split(dataset, prop = .7)
 mr_train <- training(mr_split)
 mr_test  <- testing(mr_split)
+
 ##############################  GOING INTO INTO DATASET ##################################
 
 head(mr_train)
 str(mr_train)
-mr_train <- mr_train %>% select(-"veil.type")
+mr_train <- mr_train %>% select(-"veil.type") # we have only a type in this dataset
 colSums(is.na(mr_train)) 
 if (any(mr_train=='?')) print('At least one null value is in df_train')
 df_train<- mr_train %>% select(-"stalk.root")
@@ -77,7 +79,18 @@ df_addFeatures<-df_addFeatures[,-remove]
 
 rf<-tree(class~. ,data = df_addFeatures)
 
+rf
 plot(rf)
 text(rf,pretty = 0)
+summary(rf)
+
 barplot(prop.table(table(df_addFeatures$odor.stalk.color.below.ring[df_addFeatures$class=="e"])))
 barplot(prop.table(table(df_addFeatures$odor.stalk.color.below.ring[df_addFeatures$class=="p"])))
+
+##############################  ACCURACY PART ##################################
+
+
+mr_test <- mr_test %>% select(-c("veil.type","stalk.root"))
+
+
+predict()
